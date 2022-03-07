@@ -1,0 +1,7 @@
+org\example\controllers\FirstController.class
+org\example\people\Person.class
+org\example\config\SpringMVCDispatcherServletInitializer.class
+org\example\config\SpringConfig.class
+org\example\controllers\PeopleController.class
+org\example\people\PeopleDAO.class
+org\example\controllers\SecondController.class
