@@ -26,7 +26,11 @@ public class PeopleController {
     @GetMapping("/people")
     public String getPeople(Model model) {
         model.addAttribute("people", peopleDAO.getPeopleList());
-        model.addAttribute("newPerson", new Person("Nobody has been added", "", 0, ""));
+        if (peopleDAO.getPeopleList().size() > 0) {
+            model.addAttribute("lastAddedPerson", peopleDAO.getPeopleList().get(peopleDAO.getPeopleList().size() - 1));
+        } else {
+            model.addAttribute("lastAddedPerson", new Person("Nobody has been added", "", 0, ""));
+        }
         return "/people/list";
     }
 
@@ -49,14 +53,12 @@ public class PeopleController {
     }
 
     @PostMapping("/people")
-    public String createPerson(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult,
-                               Model model) {
+    public String createPerson(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "people/newpersonThymeleaf";
 
         peopleDAO.addPerson(person);
-        model.addAttribute("people", peopleDAO.getPeopleList());
-        return "/people/list";
+        return "redirect:/people";
     }
 
     @GetMapping("/people/{id}/edit")
