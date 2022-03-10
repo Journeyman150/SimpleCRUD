@@ -81,13 +81,31 @@ public class PeopleDAO {
 
     public void update(int id, Person updatedPerson) {
         Person personToBeUpdated = this.getPersonById(id);
+        try {
+            Statement statement = connection.createStatement();
+            String SQL = "UPDATE Person SET " +
+                    "name =" + " '" + updatedPerson.getName() + "', " +
+                    "surname =" + " '" + updatedPerson.getSurname() + "', " +
+                    "age =" + " " + updatedPerson.getAge() + ", " +
+                    "email =" + " '" + updatedPerson.getEmail() + "'" +
+                    "WHERE id = " + personToBeUpdated.getId();
+            statement.execute(SQL);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         personToBeUpdated.setName(updatedPerson.getName());
         personToBeUpdated.setSurname(updatedPerson.getSurname());
         personToBeUpdated.setAge(updatedPerson.getAge());
         personToBeUpdated.setEmail(updatedPerson.getEmail());
     }
     public void deletePerson(int id) {
-//        peopleList.remove(id);
-        peopleList.removeIf(p -> p.getId()==id);
+        try {
+            Statement statement = connection.createStatement();
+            String SQL = "DELETE FROM Person WHERE id = " + id;
+            statement.execute(SQL);
+            peopleList.removeIf(p -> p.getId() == id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
